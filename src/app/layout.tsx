@@ -15,6 +15,11 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Catálogo Horus Tabacaria",
   description: "Catálogo de produtos disponíveis na Horus Tabacaria",
+  icons: {
+    icon: "/brands/Logo.jpg",
+    shortcut: "/brands/Logo.jpg",
+    apple: "/brands/Logo.jpg",
+  },
 };
 
 export default function RootLayout({
