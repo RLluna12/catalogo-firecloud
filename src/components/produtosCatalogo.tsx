@@ -113,6 +113,10 @@ export default function ProdutosCatalogo({
                   alt={produto.nome}
                   width={isMobile ? 120 : isTablet ? 140 : 160}
                   height={isMobile ? 120 : isTablet ? 140 : 160}
+                  style={{
+                    width: isMobile ? 120 : isTablet ? 140 : 160,
+                    height: "auto",
+                  }}
                   onError={(e) => {
                     const target = e.target as HTMLImageElement;
                     target.src = "/unavailable.webp";

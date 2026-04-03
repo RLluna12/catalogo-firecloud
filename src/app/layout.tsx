@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Catálogo FireCloud Tabacaria",
-  description: "Catálogo de produtos disponíveis na FireCloud Tabacaria",
+  title: "Catálogo Horus Tabacaria",
+  description: "Catálogo de produtos disponíveis na Horus Tabacaria",
 };
 
 export default function RootLayout({
