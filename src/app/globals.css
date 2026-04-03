@@ -11,9 +11,9 @@
 body {
   width: 100%;
   min-height: 100vh;
-  background-image: url('../../public/assets/bg_desktop.webp');
-  background-size: cover;
-  background-position: center;
+  background-image: url('/assets/hero1.png');
+  background-size: contain;
+  background-position: center top;
   background-repeat: no-repeat;
   background-attachment: fixed; /* Fixa a imagem de fundo no desktop */
   display: block;
@@ -23,20 +23,20 @@ body {
 /* 📱 Mobile (telas menores que 600px) */
 @media screen and (max-width: 600px) {
   body {
-    background-image: url('../../public/assets/bg.webp'); /* Imagem específica para mobile */
-    background-size: cover;
-    background-position: center;
-    background-attachment: local; /* Impede o fundo de se mover com a barra inferior */
-    min-height: -webkit-fill-available; /* Preenche toda a altura da tela no iOS */
+    background-image: url('/assets/hero1.png'); /* Imagem específica para mobile */
+    background-size: contain;
+    background-position: center top;
+    background-attachment: scroll;
+    min-height: 100dvh;
   }
 }
 
 /* 📟 Tablet (entre 600px e 960px) */
 @media screen and (min-width: 600px) and (max-width: 960px) {
   body {
-    background-image: url('../../public/assets/bg.webp');
-    background-size: cover;
-    background-position: center;
+    background-image: url('/assets/hero1.png');
+    background-size: contain;
+    background-position: center top;
     background-attachment: fixed;
   }
 }

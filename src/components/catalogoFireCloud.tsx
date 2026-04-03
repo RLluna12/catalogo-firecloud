@@ -1,20 +1,32 @@
 import Image from "next/image";
+import { Box } from "@mui/material";
 
 const CatalogoFireCloud = () => {
   return (
-    <Image
-      src="/assets/catalogo.webp"
-      alt="Descrição da imagem"
-      width={600}
-      height={200}
-      style={{
-        display: "block", // Garante que a imagem possa ser centralizada corretamente
-        margin: "auto", // Centraliza horizontalmente
-        width: "auto", // Mantém a proporção da largura
-        height: "auto", // Mantém a proporção da altura
+    <Box
+      sx={{
+        width: "100%",
+        backgroundColor: "black",
+        display: "flex",
+        justifyContent: "center",
+        py: { xs: 2, sm: 2.5, md: 3 },
+        mb: { xs: 1, md: 2 },
       }}
-      priority // Carregamento prioritário para melhorar o LCP
-    />
+    >
+      <Image
+        src="/brands/Logo.jpg"
+        alt="Descrição da imagem"
+        width={420}
+        height={140}
+        sizes="(max-width: 600px) 65vw, (max-width: 960px) 45vw, 320px"
+        style={{
+          display: "block",
+          width: "clamp(180px, 32vw, 320px)",
+          height: "auto",
+        }}
+        priority
+      />
+    </Box>
   );
 };
 

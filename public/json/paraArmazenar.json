@@ -1,16 +1,16 @@
 [
   {
-    "src": "/products/paraArmazenar/ziplock_hermetico_purple_fire.webp",
+    "src": "/products/paraArmazenar/armazenar.png",
     "nome": "Ziplock hermético purple fire",
     "preco": "R$ 5,00"
   },
   {
-    "src": "/products/paraArmazenar/slick_redondo.webp",
+    "src": "/products/paraArmazenar/armazenar1.png",
     "nome": "Slick redondo",
     "preco": "R$ 16,00"
   },
   {
-    "src": "/products/paraArmazenar/slick_bola_to_na_be.webp",
+    "src": "/products/paraArmazenar/armazenar2.png",
     "nome": "Slick Bola To Na Bê",
     "preco": "R$ 27,00"
   }

@@ -8,12 +8,13 @@ import {
   Typography,
   Box,
   Grid,
+  Button,
   useMediaQuery,
   useTheme,
 } from "@mui/material";
 import Image from "next/image";
 
-interface Produto {
+export interface Produto {
   src: string;
   nome: string;
   preco: string;
@@ -23,12 +24,14 @@ interface ProdutosCatalogoProps {
   jsonPath: string;
   categoria: string;
   id: string;
+  onAddToCart: (produto: Produto, categoria: string) => void;
 }
 
 export default function ProdutosCatalogo({
   jsonPath,
   categoria,
   id,
+  onAddToCart,
 }: ProdutosCatalogoProps) {
   const [produtos, setProdutos] = useState<Produto[]>([]);
   const theme = useTheme();
@@ -131,6 +134,15 @@ export default function ProdutosCatalogo({
                   >
                     {produto.preco}
                   </Typography>
+                  <Button
+                    fullWidth
+                    variant="contained"
+                    size={isMobile ? "small" : "medium"}
+                    sx={{ mt: 1.5, backgroundColor: "black", "&:hover": { backgroundColor: "#1f1f1f" } }}
+                    onClick={() => onAddToCart(produto, categoria)}
+                  >
+                    Adicionar ao carrinho
+                  </Button>
                 </CardContent>
               </Card>
             </Grid>
