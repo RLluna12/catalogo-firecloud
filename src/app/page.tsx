@@ -6,6 +6,7 @@ import Sidebar from "@/components/Sidebar";
 import SocialButtons from "@/components/SocialButtons";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import Link from "next/link";
 import {
   Avatar,
   Badge,
@@ -24,6 +25,7 @@ import {
   Typography,
 } from "@mui/material";
 import { useMemo, useState } from "react";
+import { CATALOG_CATEGORIES, getCategoryLabel } from "@/lib/catalog";
 
 interface CartItem extends Produto {
   id: string;
@@ -136,16 +138,34 @@ export default function Home() {
 
       <LogoCarrosel />
 
-      <ProdutosCatalogo id="armazenar" categoria="🎒 Para Armazenar" jsonPath="/json/paraArmazenar.json" onAddToCart={handleAddToCart} />
-      <ProdutosCatalogo id="cuias" categoria="🥣 Cuias" jsonPath="/json/cuias.json" onAddToCart={handleAddToCart} />
-      <ProdutosCatalogo id="sedas" categoria="📜 Sedas" jsonPath="/json/sedas.json" onAddToCart={handleAddToCart} />
-      <ProdutosCatalogo id="piteiras" categoria="🔹 Piteiras" jsonPath="/json/piteiras.json" onAddToCart={handleAddToCart} />
-      <ProdutosCatalogo id="tabaco" categoria="🌿 Tabaco" jsonPath="/json/tabaco.json" onAddToCart={handleAddToCart} />
-      <ProdutosCatalogo id="tesouras" categoria="✂️ Tesouras" jsonPath="/json/tesouras.json" onAddToCart={handleAddToCart} />
-      <ProdutosCatalogo id="isqueiros" categoria="🔥 Isqueiros" jsonPath="/json/isqueiros.json" onAddToCart={handleAddToCart} />
-      <ProdutosCatalogo id="cinzeiros" categoria="🗑️ Cinzeiros" jsonPath="/json/cinzeiros.json" onAddToCart={handleAddToCart} />
-      <ProdutosCatalogo id="bandejas" categoria="📥 Bandejas" jsonPath="/json/bandejas.json" onAddToCart={handleAddToCart} />
-      <ProdutosCatalogo id="slicks" categoria="📥 Slicks" jsonPath="/json/slicks.json" onAddToCart={handleAddToCart} />
+      {CATALOG_CATEGORIES.map((category) => (
+        <ProdutosCatalogo
+          key={category.id}
+          id={category.sectionId}
+          categoriaId={category.id}
+          categoria={getCategoryLabel(category)}
+          jsonPath={category.jsonPath}
+          onAddToCart={handleAddToCart}
+        />
+      ))}
+
+      <Box
+        sx={{
+          position: "fixed",
+          right: 16,
+          bottom: 16,
+          zIndex: 20,
+        }}
+      >
+        <Button
+          component={Link}
+          href="/admin"
+          variant="outlined"
+          sx={{ borderColor: "black", color: "black", backgroundColor: "white" }}
+        >
+          Admin
+        </Button>
+      </Box>
 
       <Box
         sx={{

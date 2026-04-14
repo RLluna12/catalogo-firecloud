@@ -3,6 +3,8 @@
 import { useState } from "react";
 import { Drawer, List, ListItem, ListItemButton, ListItemIcon, ListItemText, IconButton } from "@mui/material";
 import { Menu, Backpack, RiceBowl, Receipt, SmokingRoomsRounded, ContentCut, Whatshot, Delete, KeyboardArrowRight } from "@mui/icons-material";
+import SettingsIcon from "@mui/icons-material/Settings";
+import Link from "next/link";
 
 const Sidebar = () => {
   const [open, setOpen] = useState(false);
@@ -37,6 +39,8 @@ const Sidebar = () => {
       { text: "Isqueiros", icon: <Whatshot />, id: "isqueiros" },
       { text: "Cinzeiros", icon: <Delete />, id: "cinzeiros" },
       { text: "Bandejas", icon: <KeyboardArrowRight />, id: "bandejas" },
+      { text: "Tabaco", icon: <SmokingRoomsRounded />, id: "tabaco" },
+      { text: "Slicks", icon: <Backpack />, id: "slicks" },
     ]
 
   return (
@@ -75,6 +79,15 @@ const Sidebar = () => {
               </ListItemButton>
             </ListItem>
           ))}
+
+          <ListItem disablePadding>
+            <ListItemButton component={Link} href="/admin" onClick={() => setOpen(false)}>
+              <ListItemIcon>
+                <SettingsIcon />
+              </ListItemIcon>
+              <ListItemText primary="Admin" />
+            </ListItemButton>
+          </ListItem>
         </List>
       </Drawer>
     </>

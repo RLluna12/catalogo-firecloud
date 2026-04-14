@@ -13,6 +13,7 @@ import {
   useTheme,
 } from "@mui/material";
 import Image from "next/image";
+import { getSupabaseBrowserClient } from "@/lib/supabaseClient";
 
 export interface Produto {
   src: string;
@@ -23,6 +24,7 @@ export interface Produto {
 interface ProdutosCatalogoProps {
   jsonPath: string;
   categoria: string;
+  categoriaId: string;
   id: string;
   onAddToCart: (produto: Produto, categoria: string) => void;
 }
@@ -30,6 +32,7 @@ interface ProdutosCatalogoProps {
 export default function ProdutosCatalogo({
   jsonPath,
   categoria,
+  categoriaId,
   id,
   onAddToCart,
 }: ProdutosCatalogoProps) {
@@ -41,11 +44,30 @@ export default function ProdutosCatalogo({
   const isDesktop = useMediaQuery(theme.breakpoints.up("md"));
 
   useEffect(() => {
-    fetch(jsonPath)
-      .then((res) => res.json())
-      .then((data) => setProdutos(data))
-      .catch(() => setProdutos([]));
-  }, [jsonPath]);
+    const loadProducts = async () => {
+      const supabase = getSupabaseBrowserClient();
+
+      if (supabase) {
+        const { data, error } = await supabase
+          .from("produtos")
+          .select("nome, preco, src")
+          .eq("categoria", categoriaId)
+          .order("created_at", { ascending: false });
+
+        if (!error && data) {
+          setProdutos(data);
+          return;
+        }
+      }
+
+      fetch(jsonPath)
+        .then((res) => res.json())
+        .then((data) => setProdutos(data))
+        .catch(() => setProdutos([]));
+    };
+
+    loadProducts();
+  }, [jsonPath, categoriaId]);
 
   return (
     <Paper
