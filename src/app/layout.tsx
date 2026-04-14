@@ -16,9 +16,9 @@ export const metadata: Metadata = {
   title: "Catálogo Marrakesh Tabacaria",
   description: "Catálogo de produtos disponíveis na Marrakesh Tabacaria",
   icons: {
-    icon: "/brands/logo.png",
-    shortcut: "/brands/logo.png",
-    apple: "/brands/logo.png",
+    icon: "/brands/Logo1.png",
+    shortcut: "/brands/Logo1.png",
+    apple: "/brands/Logo1.png",
   },
 };
 
