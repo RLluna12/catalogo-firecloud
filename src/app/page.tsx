@@ -132,7 +132,7 @@ export default function Home() {
       <SocialButtons 
         whatsapp="https://wa.me/5511937701183?text=Olá,%20gostaria%20de%20tirar%20algumas%20Duvidas!" 
         instagram="https://www.instagram.com/marrakechtab/"
-        location=""
+        location="https://www.google.com/maps/search/?api=1&query=Av.+da+Saudade,+28+-+Vila+Assun%C3%A7%C3%A3o,+Santo+Andr%C3%A9+-+SP,+09030-030"
       />
 
       <LogoCarrosel />
