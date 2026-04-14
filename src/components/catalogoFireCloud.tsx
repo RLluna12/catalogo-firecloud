@@ -5,8 +5,8 @@ const CatalogoFireCloud = () => {
     <Image
       src="/brands/logo.png"
       alt="Descrição da imagem"
-      width={420}
-      height={140}
+      width={520 }
+      height={200}
       sizes="(max-width: 600px) 65vw, (max-width: 960px) 45vw, 320px"
       style={{
         display: "block", // Garante que a imagem possa ser centralizada corretamente
