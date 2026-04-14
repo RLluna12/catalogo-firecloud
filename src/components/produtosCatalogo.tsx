@@ -21,6 +21,11 @@ export interface Produto {
   preco: string;
 }
 
+const formatPriceBRL = (price: string) => {
+  const normalized = price.trim();
+  return normalized.toLowerCase().startsWith("r$") ? normalized : `R$ ${normalized}`;
+};
+
 interface ProdutosCatalogoProps {
   jsonPath: string;
   categoria: string;
@@ -118,7 +123,7 @@ export default function ProdutosCatalogo({
                   alignItems: "center",
                   justifyContent: "center",
                   p: isMobile ? 2 : isTablet ? 2.5 : 3,
-                  height: isMobile ? 250 : isTablet ? 250 : 350,
+                  minHeight: isMobile ? 250 : isTablet ? 280 : 350,
                   borderRadius: 2,
                   boxShadow: 3,
                   transition: "transform 0.3s, box-shadow 0.3s",
@@ -130,20 +135,29 @@ export default function ProdutosCatalogo({
                 }}
               >
                 {/* Imagem do produto com fallback */}
-                <Image
-                  src={produto.src}
-                  alt={produto.nome}
-                  width={isMobile ? 120 : isTablet ? 140 : 160}
-                  height={isMobile ? 120 : isTablet ? 140 : 160}
-                  style={{
-                    width: isMobile ? 120 : isTablet ? 140 : 160,
-                    height: "auto",
+                <Box
+                  sx={{
+                    position: "relative",
+                    width: isMobile ? 120 : isTablet ? 140 : 170,
+                    height: isMobile ? 120 : isTablet ? 140 : 170,
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    mb: 0.5,
                   }}
-                  onError={(e) => {
-                    const target = e.target as HTMLImageElement;
-                    target.src = "/unavailable.webp";
-                  }}
-                />
+                >
+                  <Image
+                    src={produto.src}
+                    alt={produto.nome}
+                    fill
+                    sizes={isMobile ? "120px" : isTablet ? "140px" : "170px"}
+                    style={{ objectFit: "contain" }}
+                    onError={(e) => {
+                      const target = e.target as HTMLImageElement;
+                      target.src = "/unavailable.webp";
+                    }}
+                  />
+                </Box>
 
                 <CardContent sx={{ textAlign: "center", width: "100%" }}>
                   <Typography
@@ -158,7 +172,7 @@ export default function ProdutosCatalogo({
                     fontWeight="bold"
                     mt={1}
                   >
-                    {produto.preco}
+                    {formatPriceBRL(produto.preco)}
                   </Typography>
                   <Button
                     fullWidth

@@ -10,8 +10,8 @@ export const CATALOG_CATEGORIES: CatalogCategory[] = [
   {
     id: "paraArmazenar",
     sectionId: "armazenar",
-    title: "Para Armazenar",
-    emoji: "🎒",
+    title: "Narguile",
+    emoji: "💨",
     jsonPath: "/json/paraArmazenar.json",
   },
   {

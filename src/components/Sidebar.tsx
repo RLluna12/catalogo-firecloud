@@ -1,13 +1,61 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Drawer, List, ListItem, ListItemButton, ListItemIcon, ListItemText, IconButton } from "@mui/material";
-import { Menu, Backpack, RiceBowl, Receipt, SmokingRoomsRounded, ContentCut, Whatshot, Delete, KeyboardArrowRight } from "@mui/icons-material";
+import { Menu, Backpack, RiceBowl, Receipt, SmokingRoomsRounded, ContentCut, Whatshot, Delete, KeyboardArrowRight, Inventory, LocalOffer, Star } from "@mui/icons-material";
 import SettingsIcon from "@mui/icons-material/Settings";
 import Link from "next/link";
+import { getSupabaseBrowserClient } from "@/lib/supabaseClient";
+
+const ICON_MAP: Record<string, React.ReactNode> = {
+  Backpack: <Backpack />,
+  RiceBowl: <RiceBowl />,
+  Receipt: <Receipt />,
+  SmokingRooms: <SmokingRoomsRounded />,
+  ContentCut: <ContentCut />,
+  Whatshot: <Whatshot />,
+  Delete: <Delete />,
+  KeyboardArrowRight: <KeyboardArrowRight />,
+  Inventory: <Inventory />,
+  LocalOffer: <LocalOffer />,
+  Star: <Star />,
+};
+
+const FALLBACK_ITEMS = [
+  { text: "Para Armazenar", icon_name: "Backpack", section_id: "armazenar", emoji: "" },
+  { text: "Cuias", icon_name: "RiceBowl", section_id: "cuias", emoji: "" },
+  { text: "Sedas", icon_name: "Receipt", section_id: "sedas", emoji: "" },
+  { text: "Piteiras", icon_name: "SmokingRooms", section_id: "piteiras", emoji: "" },
+  { text: "Tesouras", icon_name: "ContentCut", section_id: "tesouras", emoji: "" },
+  { text: "Isqueiros", icon_name: "Whatshot", section_id: "isqueiros", emoji: "" },
+  { text: "Cinzeiros", icon_name: "Delete", section_id: "cinzeiros", emoji: "" },
+  { text: "Bandejas", icon_name: "KeyboardArrowRight", section_id: "bandejas", emoji: "" },
+  { text: "Tabaco", icon_name: "SmokingRooms", section_id: "tabaco", emoji: "" },
+  { text: "Slicks", icon_name: "Backpack", section_id: "slicks", emoji: "" },
+];
+
+interface SidebarItem {
+  text: string;
+  icon_name: string;
+  section_id: string;
+  emoji: string;
+}
 
 const Sidebar = () => {
   const [open, setOpen] = useState(false);
+  const [items, setItems] = useState<SidebarItem[]>(FALLBACK_ITEMS);
+
+  useEffect(() => {
+    const supabase = getSupabaseBrowserClient();
+    if (!supabase) return;
+    supabase
+      .from("categorias")
+      .select("text, section_id, icon_name, emoji, ordem")
+      .order("ordem", { ascending: true })
+      .then(({ data }) => {
+        if (data && data.length > 0) setItems(data);
+      });
+  }, []);
 
   const highlightSection = (id: string) => {
     const section = document.getElementById(id);
@@ -15,33 +63,18 @@ const Sidebar = () => {
       section.style.border = "3px solid red";
       setTimeout(() => {
         section.style.border = "none";
-      }, 2000); // Remove o destaque após 2 segundos
+      }, 2000);
     }
   };
 
-
-  // Função para rolar até a seção específica
   const scrollToSection = (id: string) => {
     const section = document.getElementById(id);
     if (section) {
-      section.scrollIntoView({ behavior: "smooth" }); // Faz a rolagem suave
+      section.scrollIntoView({ behavior: "smooth" });
       highlightSection(id);
-      setOpen(false); // Fecha a Sidebar após clicar
+      setOpen(false);
     }
   };
-  const botões =
-    [
-      { text: "Para Armazenar", icon: <Backpack />, id: "armazenar" },
-      { text: "Cuias", icon: <RiceBowl />, id: "cuias" },
-      { text: "Sedas", icon: <Receipt />, id: "sedas" },
-      { text: "Piteiras", icon: <SmokingRoomsRounded />, id: "piteiras" },
-      { text: "Tesouras", icon: <ContentCut />, id: "tesouras" },
-      { text: "Isqueiros", icon: <Whatshot />, id: "isqueiros" },
-      { text: "Cinzeiros", icon: <Delete />, id: "cinzeiros" },
-      { text: "Bandejas", icon: <KeyboardArrowRight />, id: "bandejas" },
-      { text: "Tabaco", icon: <SmokingRoomsRounded />, id: "tabaco" },
-      { text: "Slicks", icon: <Backpack />, id: "slicks" },
-    ]
 
   return (
     <>
@@ -70,12 +103,11 @@ const Sidebar = () => {
             <ListItemText primary="Menu" sx={{ fontWeight: "bold", textAlign: "center" }} />
           </ListItem>
 
-          {/* Itens da Sidebar */}
-          {botões.map((item, index) => (
+          {items.map((item, index) => (
             <ListItem key={index} disablePadding>
-              <ListItemButton onClick={() => scrollToSection(item.id)}>
-                <ListItemIcon>{item.icon}</ListItemIcon>
-                <ListItemText primary={item.text} />
+              <ListItemButton onClick={() => scrollToSection(item.section_id)}>
+                <ListItemIcon>{ICON_MAP[item.icon_name] ?? <KeyboardArrowRight />}</ListItemIcon>
+                <ListItemText primary={item.emoji ? `${item.emoji} ${item.text}` : item.text} />
               </ListItemButton>
             </ListItem>
           ))}

@@ -131,8 +131,8 @@ export default function Home() {
       <CatalogoFireCloud />
 
       <SocialButtons 
-        whatsapp="https://wa.me/5511937701183?text=Olá,%20gostaria%20de%20mais%20informações!" 
-        instagram="https://www.instagram.com/horus.headshop/"
+        whatsapp="https://wa.me/5511937701183?text=Olá,%20gostaria%20de%20tirar%20algumas%20Duvidas!" 
+        instagram="https://www.instagram.com/marrakechtab/"
         location=""
       />
 
@@ -148,24 +148,6 @@ export default function Home() {
           onAddToCart={handleAddToCart}
         />
       ))}
-
-      <Box
-        sx={{
-          position: "fixed",
-          right: 16,
-          bottom: 16,
-          zIndex: 20,
-        }}
-      >
-        <Button
-          component={Link}
-          href="/admin"
-          variant="outlined"
-          sx={{ borderColor: "black", color: "black", backgroundColor: "white" }}
-        >
-          Admin
-        </Button>
-      </Box>
 
       <Box
         sx={{
