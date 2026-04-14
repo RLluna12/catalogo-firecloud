@@ -6,7 +6,6 @@ import Sidebar from "@/components/Sidebar";
 import SocialButtons from "@/components/SocialButtons";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import Link from "next/link";
 import {
   Avatar,
   Badge,
