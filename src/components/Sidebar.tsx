@@ -6,6 +6,7 @@ import { Menu, Backpack, RiceBowl, Receipt, SmokingRoomsRounded, ContentCut, Wha
 import SettingsIcon from "@mui/icons-material/Settings";
 import Link from "next/link";
 import { getSupabaseBrowserClient } from "@/lib/supabaseClient";
+import { CATALOG_CATEGORIES } from "@/lib/catalog";
 
 const ICON_MAP: Record<string, React.ReactNode> = {
   Backpack: <Backpack />,
@@ -21,18 +22,29 @@ const ICON_MAP: Record<string, React.ReactNode> = {
   Star: <Star />,
 };
 
-const FALLBACK_ITEMS = [
-  { text: "Para Armazenar", icon_name: "Backpack", section_id: "armazenar", emoji: "" },
-  { text: "Cuias", icon_name: "RiceBowl", section_id: "cuias", emoji: "" },
-  { text: "Sedas", icon_name: "Receipt", section_id: "sedas", emoji: "" },
-  { text: "Piteiras", icon_name: "SmokingRooms", section_id: "piteiras", emoji: "" },
-  { text: "Tesouras", icon_name: "ContentCut", section_id: "tesouras", emoji: "" },
-  { text: "Isqueiros", icon_name: "Whatshot", section_id: "isqueiros", emoji: "" },
-  { text: "Cinzeiros", icon_name: "Delete", section_id: "cinzeiros", emoji: "" },
-  { text: "Bandejas", icon_name: "KeyboardArrowRight", section_id: "bandejas", emoji: "" },
-  { text: "Tabaco", icon_name: "SmokingRooms", section_id: "tabaco", emoji: "" },
-  { text: "Slicks", icon_name: "Backpack", section_id: "slicks", emoji: "" },
-];
+const DEFAULT_ICON_BY_SECTION: Record<string, string> = {
+  armazenar: "Backpack",
+  cuias: "RiceBowl",
+  sedas: "Receipt",
+  piteiras: "SmokingRooms",
+  tesouras: "ContentCut",
+  isqueiros: "Whatshot",
+  cinzeiros: "Delete",
+  bandejas: "KeyboardArrowRight",
+  tabaco: "SmokingRooms",
+  slicks: "Backpack",
+};
+
+const CATALOG_BY_SECTION = Object.fromEntries(
+  CATALOG_CATEGORIES.map((category) => [category.sectionId, category])
+);
+
+const FALLBACK_ITEMS = CATALOG_CATEGORIES.map((category) => ({
+  text: category.title,
+  icon_name: DEFAULT_ICON_BY_SECTION[category.sectionId] ?? "KeyboardArrowRight",
+  section_id: category.sectionId,
+  emoji: category.emoji,
+}));
 
 interface SidebarItem {
   text: string;
@@ -40,6 +52,24 @@ interface SidebarItem {
   section_id: string;
   emoji: string;
 }
+
+const normalizeSidebarItems = (items: SidebarItem[]) => {
+  const normalized = items.map((item) => {
+    const catalogCategory = CATALOG_BY_SECTION[item.section_id];
+
+    return {
+      ...item,
+      text: catalogCategory?.title ?? item.text,
+      emoji: catalogCategory?.emoji ?? item.emoji,
+      icon_name: item.icon_name || DEFAULT_ICON_BY_SECTION[item.section_id] || "KeyboardArrowRight",
+    };
+  });
+
+  const seenSections = new Set(normalized.map((item) => item.section_id));
+  const missingItems = FALLBACK_ITEMS.filter((item) => !seenSections.has(item.section_id));
+
+  return [...normalized, ...missingItems];
+};
 
 const Sidebar = () => {
   const [open, setOpen] = useState(false);
@@ -53,7 +83,12 @@ const Sidebar = () => {
       .select("text, section_id, icon_name, emoji, ordem")
       .order("ordem", { ascending: true })
       .then(({ data }) => {
-        if (data && data.length > 0) setItems(data);
+        if (data && data.length > 0) {
+          setItems(normalizeSidebarItems(data));
+          return;
+        }
+
+        setItems(normalizeSidebarItems(FALLBACK_ITEMS));
       });
   }, []);
 
