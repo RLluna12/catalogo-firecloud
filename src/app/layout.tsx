@@ -13,12 +13,12 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Catálogo Horus Tabacaria",
-  description: "Catálogo de produtos disponíveis na Horus Tabacaria",
+  title: "Catálogo Marrakesh Tabacaria",
+  description: "Catálogo de produtos disponíveis na Marrakesh Tabacaria",
   icons: {
-    icon: "/brands/Logo.png",
-    shortcut: "/brands/Logo.png",
-    apple: "/brands/Logo.png",
+    icon: "/brands/logo.png",
+    shortcut: "/brands/logo.png",
+    apple: "/brands/logo.png",
   },
 };
 
