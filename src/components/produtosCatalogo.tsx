@@ -9,15 +9,20 @@ import {
   Box,
   Grid,
   Button,
+  Dialog,
+  DialogContent,
+  IconButton,
   useMediaQuery,
   useTheme,
 } from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
 import Image from "next/image";
 import { getSupabaseBrowserClient } from "@/lib/supabaseClient";
 
 export interface Produto {
   src: string;
   nome: string;
+  descricao?: string;
   preco: string;
 }
 
@@ -42,6 +47,7 @@ export default function ProdutosCatalogo({
   onAddToCart,
 }: ProdutosCatalogoProps) {
   const [produtos, setProdutos] = useState<Produto[]>([]);
+  const [selectedProduct, setSelectedProduct] = useState<Produto | null>(null);
   const theme = useTheme();
 
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
@@ -55,7 +61,7 @@ export default function ProdutosCatalogo({
       if (supabase) {
         const { data, error } = await supabase
           .from("produtos")
-          .select("nome, preco, src")
+          .select("nome, descricao, preco, src")
           .eq("categoria", categoriaId)
           .order("created_at", { ascending: false });
 
@@ -136,6 +142,15 @@ export default function ProdutosCatalogo({
               >
                 {/* Imagem do produto com fallback */}
                 <Box
+                  role="button"
+                  tabIndex={0}
+                  onClick={() => setSelectedProduct(produto)}
+                  onKeyDown={(event) => {
+                    if (event.key === "Enter" || event.key === " ") {
+                      event.preventDefault();
+                      setSelectedProduct(produto);
+                    }
+                  }}
                   sx={{
                     position: "relative",
                     width: isMobile ? 120 : isTablet ? 140 : 170,
@@ -144,6 +159,7 @@ export default function ProdutosCatalogo({
                     alignItems: "center",
                     justifyContent: "center",
                     mb: 0.5,
+                    cursor: "zoom-in",
                   }}
                 >
                   <Image
@@ -166,6 +182,22 @@ export default function ProdutosCatalogo({
                   >
                     {produto.nome}
                   </Typography>
+                  {produto.descricao && (
+                    <Typography
+                      variant="body2"
+                      color="text.secondary"
+                      mt={0.8}
+                      sx={{
+                        minHeight: isMobile ? 36 : 42,
+                        display: "-webkit-box",
+                        WebkitLineClamp: 2,
+                        WebkitBoxOrient: "vertical",
+                        overflow: "hidden",
+                      }}
+                    >
+                      {produto.descricao}
+                    </Typography>
+                  )}
                   <Typography
                     variant="body1"
                     color="primary"
@@ -189,6 +221,53 @@ export default function ProdutosCatalogo({
           ))}
         </Grid>
       </Box>
+
+      <Dialog
+        open={Boolean(selectedProduct)}
+        onClose={() => setSelectedProduct(null)}
+        maxWidth="sm"
+        fullWidth
+      >
+        <DialogContent sx={{ p: 2.5, position: "relative" }}>
+          <IconButton
+            aria-label="Fechar"
+            onClick={() => setSelectedProduct(null)}
+            sx={{ position: "absolute", top: 8, right: 8, zIndex: 2 }}
+          >
+            <CloseIcon />
+          </IconButton>
+
+          {selectedProduct && (
+            <>
+              <Box
+                sx={{
+                  position: "relative",
+                  width: "100%",
+                  height: { xs: 280, sm: 420 },
+                  mt: 1,
+                }}
+              >
+                <Image
+                  src={selectedProduct.src}
+                  alt={selectedProduct.nome}
+                  fill
+                  sizes="(max-width: 600px) 90vw, 560px"
+                  style={{ objectFit: "contain" }}
+                />
+              </Box>
+
+              <Typography variant="h6" fontWeight="bold" mt={2}>
+                {selectedProduct.nome}
+              </Typography>
+              {selectedProduct.descricao && (
+                <Typography variant="body2" color="text.secondary" mt={0.8}>
+                  {selectedProduct.descricao}
+                </Typography>
+              )}
+            </>
+          )}
+        </DialogContent>
+      </Dialog>
     </Paper>
   );
 }
