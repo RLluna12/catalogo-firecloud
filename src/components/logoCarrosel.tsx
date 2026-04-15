@@ -26,12 +26,30 @@ const LogoCarrosel = () => {
     <Box
       sx={{
         width: "98vw",
+        position: "relative",
+        overflow: "hidden",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
         margin: "50px auto",
         paddingLeft: isMobile ? 2 : 6, // Padding lateral ajustado
         paddingRight: isMobile ? 2 : 6,
+        "&::before": {
+          content: '""',
+          position: "absolute",
+          inset: 0,
+          backgroundImage: "url('/brands/logo.png')",
+          backgroundRepeat: "no-repeat",
+          backgroundPosition: "center",
+          backgroundSize: "contain",
+          opacity: 1,
+          pointerEvents: "none",
+          zIndex: 0,
+        },
+        "& .swiper": {
+          position: "relative",
+          zIndex: 1,
+        },
       }}
     >
       <Swiper
